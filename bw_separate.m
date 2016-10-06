@@ -36,12 +36,15 @@ Xr=x_int;
 Yr=y_int;
 Xl=x_int;
 Yl=y_int;
+[X,Y]=size(A);
 while add_l_x||add_l_y||add_r_x||add_r_y
     Xr=Xr+add_r_x;
     Yr=Yr+add_r_y;
     Xl=Xl+add_l_x;
     Yl=Yl-add_l_y;
-    for i=x_int:Xr
+    fprintf('image changing !\n');
+    if Yr<=Y
+    for i=x_int:min(Xr,X)
         if A(i,Yr)==0
             add_r_y=1;
             break;
@@ -49,7 +52,11 @@ while add_l_x||add_l_y||add_r_x||add_r_y
             add_r_y=0;
         end
     end
-    for i=y_int:Yr
+    else
+        add_r_y=0;
+    end
+    if Xr<=X
+    for i=y_int:min(Yr,Y)
         if A(Xr,i)==0
             add_r_x=1;
             break;
@@ -57,7 +64,11 @@ while add_l_x||add_l_y||add_r_x||add_r_y
             add_r_x=0;
         end
     end
-    for i=x_int:Xl
+    else
+        add_r_x=0;
+    end
+    if Yl>0
+    for i=x_int:min(Xl,X)
         if A(i,Yl)==0
             add_l_y=1;
             break;
@@ -65,14 +76,21 @@ while add_l_x||add_l_y||add_r_x||add_r_y
             add_l_y=0;
         end
     end
-    for i=Yl:y_int
+    else
+        add_l_y=0;
+    end
+    if Xl<X
+    for i=max(Yl,1):y_int
         if A(Xl,i)==0
             add_l_x=1;
             break;
         else
             add_l_x=0;
         end
-    end                          
+    end
+    else
+        add_l_x=0;
+    end
 end
 x_min=min([x_int,Xr-1,Xl-1]);
 y_min=min([y_int,Yr-1,Yl+1]);
